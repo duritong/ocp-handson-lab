@@ -29,9 +29,9 @@ Let's inspect the different views by trying to find answers for the following qu
 
 To make things a bit more interesting, we have given you read access to the namespaces, that hosts this tutorial.
 
-* Can you tell us how many instances are running of the handson tutorial app?
+* Can you tell us how many instances are running of the "handson-tutorial" app?
 * Can you tell us how much CPU / memory it uses?
-* Can you tell us who accesses the handson tutorial app?
+* Can you tell us who accesses the "handson-tutorial" app?
 
 There is also a centralized UI for log inspection, which allows you give an aggregated view over the logs from that pod. Can you find it?
 
