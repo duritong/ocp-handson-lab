@@ -27,7 +27,7 @@ Let's inspect the different views by trying to find answers for the following qu
 * What projects / namespaces are around?
 * What is running in these namespaces?
 
-To make things a bit more interesting, we have given you read access to the namespaces, that hosts this tutorial.
+To make things a bit more interesting, we have given you read access to the namespace, that hosts this tutorial.
 
 * Can you tell us how many instances are running of the "handson-tutorial" app?
 * Can you tell us how much CPU / memory it uses?
@@ -43,15 +43,15 @@ You can talk to the API using the kubernetes native client `kubectl` or the Open
 
 To give you an easy way to access the cli, OpenShift ships with a built-in web-based Terminal, that allows you to directly execute commands against the API using your account.
 
-You can start such a Terminal with on the `>_` Symbol in the top menu bar on the right hand side. When starting your terminal the first time, you have to choose a base namespace / project with write access to it, that will host the terminal application for you. We recommend to create an extra project for it called: `userXY-terminal`.
+You can start such a Terminal with on the `>_` Symbol in the top menu bar on the right hand side. When starting your terminal the first time, you have to choose a base namespace / project with write access to it, that will host the terminal application for you. We recommend to create an extra project for it called: `userXY-terminal`. Where XY is the number of your user. Over the whole tutorial we will reference with userXY to this, pay attention when entering / copying commands.
 
-Now let's get familiar with the cli:
+Now let's get familiar with the cli and once the terminal got launched, type:
 
      oc whoami
 
 ### Getting help
 
-oc cli features a help output, as well as more detailed help for each command:
+The oc cli features a help output, as well as more detailed help for each command:
 
      oc help
      oc projects -h
@@ -59,7 +59,7 @@ oc cli features a help output, as well as more detailed help for each command:
 
 ### Create a new project on the cli
 
-Create a project called `userXY-cli`
+Create a project called `userXY-cli` - Projects or also called namespaces (the Kubernetes representation) are a way to organize, administrate and compartinalize your resource within kubernetes.
 
 You can get help by
 
@@ -156,7 +156,13 @@ The application provides several URLs:
 * /health - just returning the healthiness of the application
 * /metrics - some metrics
 
-Inspect these URLs
+Inspect these URLs.
+
+Can you also connect to a shell into the Pod of the deployed application? What is going on in there?
+
+    oc rsh <pod name>
+
+What else can you tell us about the deployed application by inspecting its resources?
 
 ## Self-Healing and scaling
 
@@ -187,7 +193,7 @@ What happens to the pods? What happens in the topology view when you delete thes
 
 ### More fun
 
-We can make that also much more fun.
+We can also do these things with a different mechanism that makes much more fun.
 
 Let's play at [https://kubeinvaders.APPS_DOMAIN](https://kubeinvaders.APPS_DOMAIN)
 
@@ -204,7 +210,7 @@ cat >configmap.yaml<<EOF
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: example
+  name: file-content
 data:
   content.txt: Random Content
 EOF
@@ -231,17 +237,13 @@ Add the following sections:
       volumes:
       - name: config
         configMap:
-          name: example
+          name: file-content
 ```
 
-Afterwards the trigger will automaticall restart the config map.
+Afterwards the trigger will automaticall restart the deployed application.
 
 When changing the config map you need to restart the pod.
 
 ## Deployment Pipeline
 
 To get an overview on how to delier applications on OpenShift using built-in pipeline capabilities, we recommend to follow the official [Pipelines Tutorial](https://github.com/openshift/pipelines-tutorial#deploy-sample-application)
-
-
-
-

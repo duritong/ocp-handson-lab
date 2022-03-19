@@ -27,7 +27,7 @@
 
 <p>When connecting, you will have to authenticate using the username you got handed out at the beginning of the labs.</p>
 
-<p>Use this username and password to authenticate with the <code>HtPasswd-demo</code> identity provider. When being offerered to &ldquo;Log in with&rdquo; choose the <code>IDP_NAME</code> option and afterwards your username and password.</p>
+<p>Use this username and password to authenticate with the <code>HtPasswd-demo</code> identity provider. When being offerered to &ldquo;Log in with&rdquo; choose the <code>HtPasswd-demo</code> option and afterwards your username and password.</p>
 
 <p>After login you are prompted by a short guide through the most important parts of the UI - we recommend you to quickly step through it.</p>
 
@@ -41,12 +41,12 @@
 </ul>
 
 
-<p>To make things a bit more interesting, we have given you read access to the namespaces, that hosts this tutorial.</p>
+<p>To make things a bit more interesting, we have given you read access to the namespace, that hosts this tutorial.</p>
 
 <ul>
-<li>Can you tell us how many instances are running of the handson tutorial app?</li>
+<li>Can you tell us how many instances are running of the &ldquo;handson-tutorial&rdquo; app?</li>
 <li>Can you tell us how much CPU / memory it uses?</li>
-<li>Can you tell us who accesses the handson tutorial app?</li>
+<li>Can you tell us who accesses the &ldquo;handson-tutorial&rdquo; app?</li>
 </ul>
 
 
@@ -60,16 +60,16 @@
 
 <p>To give you an easy way to access the cli, OpenShift ships with a built-in web-based Terminal, that allows you to directly execute commands against the API using your account.</p>
 
-<p>You can start such a Terminal with on the <code>&gt;_</code> Symbol in the top menu bar on the right hand side. When starting your terminal the first time, you have to choose a base namespace / project with write access to it, that will host the terminal application for you. We recommend to create an extra project for it called: <code>userXY-terminal</code>.</p>
+<p>You can start such a Terminal with on the <code>&gt;_</code> Symbol in the top menu bar on the right hand side. When starting your terminal the first time, you have to choose a base namespace / project with write access to it, that will host the terminal application for you. We recommend to create an extra project for it called: <code>userXY-terminal</code>. Where XY is the number of your user. Over the whole tutorial we will reference with userXY to this, pay attention when entering / copying commands.</p>
 
-<p>Now let&rsquo;s get familiar with the cli:</p>
+<p>Now let&rsquo;s get familiar with the cli and once the terminal got launched, type:</p>
 
 <pre><code> oc whoami
 </code></pre>
 
 <h3>Getting help</h3>
 
-<p>oc cli features a help output, as well as more detailed help for each command:</p>
+<p>The oc cli features a help output, as well as more detailed help for each command:</p>
 
 <pre><code> oc help
  oc projects -h
@@ -78,7 +78,7 @@
 
 <h3>Create a new project on the cli</h3>
 
-<p>Create a project called <code>userXY-cli</code></p>
+<p>Create a project called <code>userXY-cli</code> - Projects or also called namespaces (the Kubernetes representation) are a way to organize, administrate and compartinalize your resource within kubernetes.</p>
 
 <p>You can get help by</p>
 
@@ -193,7 +193,14 @@
 </ul>
 
 
-<p>Inspect these URLs</p>
+<p>Inspect these URLs.</p>
+
+<p>Can you also connect to a shell into the Pod of the deployed application? What is going on in there?</p>
+
+<pre><code>oc rsh &lt;pod name&gt;
+</code></pre>
+
+<p>What else can you tell us about the deployed application by inspecting its resources?</p>
 
 <h2>Self-Healing and scaling</h2>
 
@@ -228,7 +235,7 @@ oc get pods -l deployment=ocp-handson-lab
 
 <h3>More fun</h3>
 
-<p>We can make that also much more fun.</p>
+<p>We can also do these things with a different mechanism that makes much more fun.</p>
 
 <p>Let&rsquo;s play at <a href="https://kubeinvaders.apps.ocp001.rhlab.ch">https://kubeinvaders.apps.ocp001.rhlab.ch</a></p>
 
@@ -245,7 +252,7 @@ cat >configmap.yaml&lt;&lt;EOF
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: example
+  name: file-content
 data:
   content.txt: Random Content
 EOF</p>
@@ -277,12 +284,12 @@ EOF</p>
 <pre><code>  volumes:
   - name: config
     configMap:
-      name: example
+      name: file-content
 </code></pre>
 
 <p>```</p>
 
-<p>Afterwards the trigger will automaticall restart the config map.</p>
+<p>Afterwards the trigger will automaticall restart the deployed application.</p>
 
 <p>When changing the config map you need to restart the pod.</p>
 
