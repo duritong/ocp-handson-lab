@@ -1,0 +1,7 @@
+apiVersion: project.openshift.io/v1
+kind: ProjectRequest
+metadata:
+  name: handson-tutorial
+spec:
+  description: 'Serving the content for handson.rhlab.ch'
+  displayName: 'Handson Tutorial'
