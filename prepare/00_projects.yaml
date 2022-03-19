@@ -4,4 +4,12 @@ metadata:
   name: handson-tutorial
 spec:
   description: 'Serving the content for handson.rhlab.ch'
-  displayName: 'Handson Tutorial'
+  displayName: 'HandsOn Tutorial'
+---
+apiVersion: project.openshift.io/v1
+kind: ProjectRequest
+metadata:
+  name: handson-kubeinvaders
+spec:
+  description: 'Running kubeinvaders'
+  displayName: 'HandsOn KubeInvaders'
