@@ -35,4 +35,12 @@ To make things a bit more interesting, we have given you read access to the name
 
 There is also a centralized UI for log inspection, which allows you give an aggregated view over the logs from that pod. Can you find it?
 
-## Deployment
+## Use the cli
+
+All the operations within the webinterface are API calls to the standard Kubernetes API. OpenShift extends this API with a set of aditional APIs that provide OpenShift specific features. Such as Routes, Builds, etc.
+
+You can talk to the API using the kubernetes native client `kubectl` or the OpenShift specific branded version of it, called `oc`.
+
+To give you an easy way to access the cli, OpenShift ships with a built-in web-based Terminal, that allows you to directly execute commands against the API using your account.
+
+You can start such a Terminal with on the `>_` Symbol in the top menu bar on the right hand side. When starting your terminal the first time, you have to choose a base namespace / project with write access to it, that will host the terminal application for you. We recommend to create an extra project for it called: `userXY-terminal`.
