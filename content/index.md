@@ -27,6 +27,8 @@ Let's inspect the different views by trying to find answers for the following qu
 * What projects / namespaces are around?
 * What is running in these namespaces?
 
+To make things a bit more interesting, we have given you read access to the namespaces, that hosts this tutorial.
+
 * Can you tell us how many instances are running of the handson tutorial app?
 * Can you tell us how much CPU / memory it uses?
 * Can you tell us who accesses the handson tutorial app?

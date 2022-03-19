@@ -13,4 +13,8 @@ A simple LAB setup that guides you through OpenShift
 
 ## Deploying the guide
 
-    oc new-app openshift/nginx-example -p NAME=handson-tutorial -p SOURCE_REPOSITORY_URL=https://github.com/duritong/ocp-handson-lab -p CONTEXT_DIR=content -p APPLICATION_DOMAIN=handson.MAIN_DOMAIN
+    WEBHOOK=`pwgen 40 1`
+    MAIN_DOMAIN=xy.com
+    oc new-app -n handson-tutorial contenxt/nginx.json -p NAME=handson-tutorial -p SOURCE_REPOSITORY_URL=https://github.com/duritong/ocp-handson-lab -p CONTEXT_DIR=content -p APPLICATION_DOMAIN=handson.$MAIN_DOMAIN GITHUB_WEBHOOK_SECRET=${WEBHOOK}
+    echo Webhook ${WEBHOOK}
+    echo URL: http://handson.$MAIN_DOMAIN
