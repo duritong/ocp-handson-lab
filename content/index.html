@@ -61,5 +61,233 @@
 <p>To give you an easy way to access the cli, OpenShift ships with a built-in web-based Terminal, that allows you to directly execute commands against the API using your account.</p>
 
 <p>You can start such a Terminal with on the <code>&gt;_</code> Symbol in the top menu bar on the right hand side. When starting your terminal the first time, you have to choose a base namespace / project with write access to it, that will host the terminal application for you. We recommend to create an extra project for it called: <code>userXY-terminal</code>.</p>
+
+<p>Now let&rsquo;s get familiar with the cli:</p>
+
+<pre><code> oc whoami
+</code></pre>
+
+<h3>Getting help</h3>
+
+<p>oc cli features a help output, as well as more detailed help for each command:</p>
+
+<pre><code> oc help
+ oc projects -h
+ oc projects
+</code></pre>
+
+<h3>Create a new project on the cli</h3>
+
+<p>Create a project called <code>userXY-cli</code></p>
+
+<p>You can get help by</p>
+
+<pre><code> oc new-project -h
+</code></pre>
+
+<p>To create your new project you can do:</p>
+
+<pre><code> oc new-project userXY-cli
+</code></pre>
+
+<p>We are immediately switched to our project:</p>
+
+<pre><code> oc project
+</code></pre>
+
+<p>We can inspect our project by either describing it or getting a yaml (or json) formatted output of our created project.</p>
+
+<pre><code> oc describe project userXY-cli
+ oc get project userXY-webui -o yaml
+ oc get project userXY-webui -o json
+</code></pre>
+
+<h3>Inspecting and editing other resources</h3>
+
+<p>Everything within Openshift (Kubernetes) is represented as a resource, which we can view and depending on our privileges edit.</p>
+
+<p>You can get for example all pods of your current project, by typing:</p>
+
+<pre><code> oc get pods
+</code></pre>
+
+<p>You can also get all pods in a different namespace:</p>
+
+<pre><code> oc get pods -n handson-tutorial
+</code></pre>
+
+<p>It is also possible to describe resources to get a more readable format:</p>
+
+<pre><code> oc project handson-tutorial
+ oc describe buildconfig handson-tutorial
+</code></pre>
+
+<p>You can also edit them:</p>
+
+<pre><code> oc edit resrourceXY resourceName
+</code></pre>
+
+<p>For example let&rsquo;s edit the buildconfig</p>
+
+<pre><code> oc edit buildconfig handson-tutorial
+</code></pre>
+
+<p>This was only an example and you do not have write permissions to that resource anyway.</p>
+
+<p>Do exit the editor by typing: <em>ESC</em> and <em>:</em> and <em>q</em></p>
+
+<h3>How are my resources doing?</h3>
+
+<p>You can always get an overview of your current resources by typing:</p>
+
+<pre><code> oc status
+</code></pre>
+
+<p>This will become handy, once we start deploying more things.</p>
+
+<h2>Deployment</h2>
+
+<p>Now let&rsquo;s deploy our own application. We recommend you to use the cli in the webterminal for the next steps.</p>
+
+<p>First we need a project to deploy our application into:</p>
+
+<pre><code> oc new-project userXY-app
+</code></pre>
+
+<p>We have prepared a little demo application that is easy to deploy:</p>
+
+<pre><code> oc new-app -n userXY-app registry.access.redhat.com/ubi8/ruby-30:latest~https://github.com/duritong/ocp-handson-lab/ --context-dir=app/
+</code></pre>
+
+<p>This will create a new application as well as starts a build of the application. You can follow the build using:</p>
+
+<pre><code> oc logs -f buildconfig/ocp-handson-lab
+</code></pre>
+
+<p>Once finished you can verify your new app, either in the topology view or through the following commands:</p>
+
+<pre><code> oc get deployment
+ oc get pods
+ oc status
+</code></pre>
+
+<p>BUT what is your application doing? It serves some content, to make this content accessible, we can create a <code>Route</code>:</p>
+
+<pre><code>oc create route edge --service=ocp-handson-lab --insecure-policy=Redirect
+</code></pre>
+
+<p>Once create you can get the hostname either via cli:</p>
+
+<pre><code>oc describe route ocp-handson-lab
+</code></pre>
+
+<p>Or in the topology view in the webinterface where you now should have a link on your running application.</p>
+
+<p>The application provides several URLs:</p>
+
+<ul>
+<li>/ - the main entry point</li>
+<li>/lobster - inspect</li>
+<li>/health - just returning the healthiness of the application</li>
+<li>/metrics - some metrics</li>
+</ul>
+
+
+<p>Inspect these URLs</p>
+
+<h2>Self-Healing and scaling</h2>
+
+<p>An important feature of Kubernetes is that it tries really hard to keep your application running. Let&rsquo;s look into that a bit:</p>
+
+<p>We can easily query all the pods from our application deployment:</p>
+
+<pre><code>oc project userY-app
+oc get pods -l deployment=ocp-handson-lab
+</code></pre>
+
+<p>This filters all the pods with the label <code>deployment=ocp-handson-lab</code>.</p>
+
+<p>We can also use this to delete the pods:</p>
+
+<pre><code>oc delete pod -l deployment=ocp-handson-lab
+</code></pre>
+
+<p>Watch what is happening in the <code>Topology</code> view or re-query the current running pods:</p>
+
+<pre><code>oc get pods -l deployment=ocp-handson-lab
+</code></pre>
+
+<p>Re-check the Pod Name when you visit the application.</p>
+
+<p>Now we can also launch much more pods for our application, making it more re-silient to failure of individual instances, as well as to absorb more load:</p>
+
+<pre><code>oc scale deployment/ocp-handson-lab --replicas=10
+</code></pre>
+
+<p>What happens to the pods? What happens in the topology view when you delete these pods?</p>
+
+<h3>More fun</h3>
+
+<p>We can make that also much more fun.</p>
+
+<p>Let&rsquo;s play at <a href="https://kubeinvaders.apps.ocp001.rhlab.ch">https://kubeinvaders.apps.ocp001.rhlab.ch</a></p>
+
+<h2>Configuring the Application</h2>
+
+<p>The application we deployed can return a different string than the current os-release file content. For that you can place a file in the container at <code>/config/content.txt</code> - This will be returned as part of the default webpage.</p>
+
+<p>In kubernetes ConfigMaps are handy for that, this allows you to configure additional data through the Kubernetes API that is then injected into the container over different means.</p>
+
+<p>First let&rsquo;s create a ConfigMap:</p>
+
+<p>```
+cat >configmap.yaml&lt;&lt;EOF
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example
+data:
+  content.txt: Random Content
+EOF</p>
+
+<p>oc apply -n userXY-app -f configmap.yaml
+```</p>
+
+<p>Set Random Content to whatever you like to get.</p>
+
+<p>No we need to edit the deployment to include configmap as a volume:</p>
+
+<pre><code>oc edit -n userXY-app deployment ocp-handson-lab
+</code></pre>
+
+<p>Add the following sections:</p>
+
+<p>```</p>
+
+<h1>after terminationMessagePolicy: File</h1>
+
+<pre><code>    volumeMounts:
+    - name: config
+      mountPath: "/config"
+      readOnly: true
+</code></pre>
+
+<h1>after terminationGracePeriodSeconds</h1>
+
+<pre><code>  volumes:
+  - name: config
+    configMap:
+      name: example
+</code></pre>
+
+<p>```</p>
+
+<p>Afterwards the trigger will automaticall restart the config map.</p>
+
+<p>When changing the config map you need to restart the pod.</p>
+
+<h2>Deployment Pipeline</h2>
+
+<p>To get an overview on how to delier applications on OpenShift using built-in pipeline capabilities, we recommend to follow the official <a href="https://github.com/openshift/pipelines-tutorial#deploy-sample-application">Pipelines Tutorial</a></p>
 </body>
 </html>
