@@ -16,7 +16,7 @@ We recommend you to keep this tutorial open in a browser tab, while opening a ne
 
 When connecting, you will have to authenticate using the username you got handed out at the beginning of the labs.
 
-Use this username and password to authenticate with the `IDP_NAME` identity provider. When being offerered to "Log in with" choose the `HtPasswd-demo` option and afterwards your username and password.
+Use this username and password to authenticate with the `IDP_NAME` identity provider. When being offerered to "Log in with" choose the `IDP_NAME` option and afterwards your username and password.
 
 After login you are prompted by a short guide through the most important parts of the UI - we recommend you to quickly step through it.
 
