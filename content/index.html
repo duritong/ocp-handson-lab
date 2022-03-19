@@ -247,18 +247,17 @@ oc get pods -l deployment=ocp-handson-lab
 
 <p>First let&rsquo;s create a ConfigMap:</p>
 
-<p>```
-cat >configmap.yaml&lt;&lt;EOF
+<pre><code>cat &gt;configmap.yaml&lt;&lt;EOF
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: file-content
 data:
   content.txt: Random Content
-EOF</p>
+EOF
 
-<p>oc apply -n userXY-app -f configmap.yaml
-```</p>
+oc apply -n userXY-app -f configmap.yaml
+</code></pre>
 
 <p>Set Random Content to whatever you like to get.</p>
 
@@ -269,25 +268,18 @@ EOF</p>
 
 <p>Add the following sections:</p>
 
-<p>```</p>
+<pre><code># after terminationMessagePolicy: File
+        volumeMounts:
+        - name: config
+          mountPath: "/config"
+          readOnly: true
 
-<h1>after terminationMessagePolicy: File</h1>
-
-<pre><code>    volumeMounts:
-    - name: config
-      mountPath: "/config"
-      readOnly: true
+# after terminationGracePeriodSeconds
+      volumes:
+      - name: config
+        configMap:
+          name: file-content
 </code></pre>
-
-<h1>after terminationGracePeriodSeconds</h1>
-
-<pre><code>  volumes:
-  - name: config
-    configMap:
-      name: file-content
-</code></pre>
-
-<p>```</p>
 
 <p>Afterwards the trigger will automaticall restart the deployed application.</p>
 
@@ -296,5 +288,7 @@ EOF</p>
 <h2>Deployment Pipeline</h2>
 
 <p>To get an overview on how to delier applications on OpenShift using built-in pipeline capabilities, we recommend to follow the official <a href="https://github.com/openshift/pipelines-tutorial#deploy-sample-application">Pipelines Tutorial</a></p>
+
+<h1>We are at the end!</h1>
 </body>
 </html>

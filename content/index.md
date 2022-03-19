@@ -205,18 +205,16 @@ In kubernetes ConfigMaps are handy for that, this allows you to configure additi
 
 First let's create a ConfigMap:
 
-```
-cat >configmap.yaml<<EOF
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: file-content
-data:
-  content.txt: Random Content
-EOF
-
-oc apply -n userXY-app -f configmap.yaml
-```
+    cat >configmap.yaml<<EOF
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: file-content
+    data:
+      content.txt: Random Content
+    EOF
+    
+    oc apply -n userXY-app -f configmap.yaml
 
 Set Random Content to whatever you like to get.
 
@@ -226,19 +224,17 @@ No we need to edit the deployment to include configmap as a volume:
 
 Add the following sections:
 
-```
-# after terminationMessagePolicy: File
-        volumeMounts:
-        - name: config
-          mountPath: "/config"
-          readOnly: true
-
-# after terminationGracePeriodSeconds
-      volumes:
-      - name: config
-        configMap:
-          name: file-content
-```
+    # after terminationMessagePolicy: File
+            volumeMounts:
+            - name: config
+              mountPath: "/config"
+              readOnly: true
+    
+    # after terminationGracePeriodSeconds
+          volumes:
+          - name: config
+            configMap:
+              name: file-content
 
 Afterwards the trigger will automaticall restart the deployed application.
 
@@ -247,3 +243,5 @@ When changing the config map you need to restart the pod.
 ## Deployment Pipeline
 
 To get an overview on how to delier applications on OpenShift using built-in pipeline capabilities, we recommend to follow the official [Pipelines Tutorial](https://github.com/openshift/pipelines-tutorial#deploy-sample-application)
+
+# We are at the end!
