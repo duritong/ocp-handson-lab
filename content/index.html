@@ -1,7 +1,7 @@
 <!doctype html public "-//W3C//DTD HTML 4.0 Transitional //EN">
 <html>
 <head>
-  <meta name="GENERATOR" content="mkd2html 2.2.4">
+  <meta name="GENERATOR" content="mkd2html 2.2.7">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <link rel="stylesheet"
         type="text/css"
@@ -52,6 +52,14 @@
 
 <p>There is also a centralized UI for log inspection, which allows you give an aggregated view over the logs from that pod. Can you find it?</p>
 
+<h3>Task</h3>
+
+<p>Can you create a new project called <code>userXY-webui</code> in the UI? Where XY is the number of your user. Over the whole tutorial we will reference with userXY to this, pay attention when entering / copying commands.</p>
+
+<p>Give it meaningful Display Name and Desc    ription.</p>
+
+<p>Tip: You can get a list of projects, this is also where you can create them.</p>
+
 <h2>Use the cli</h2>
 
 <p>All the operations within the webinterface are API calls to the standard Kubernetes API. OpenShift extends this API with a set of aditional APIs that provide OpenShift specific features. Such as Routes, Builds, etc.</p>
@@ -60,7 +68,9 @@
 
 <p>To give you an easy way to access the cli, OpenShift ships with a built-in web-based Terminal, that allows you to directly execute commands against the API using your account.</p>
 
-<p>You can start such a Terminal with on the <code>&gt;_</code> Symbol in the top menu bar on the right hand side. When starting your terminal the first time, you have to choose a base namespace / project with write access to it, that will host the terminal application for you. We recommend to create an extra project for it called: <code>userXY-terminal</code>. Where XY is the number of your user. Over the whole tutorial we will reference with userXY to this, pay attention when entering / copying commands.</p>
+<p>You can start such a Terminal with on the <code>&gt;_</code> Symbol in the top menu bar on the right hand side. When starting your terminal the first time, you have to choose a base namespace / project with write access to it, that will host the terminal application for you. When you initially launch the terminal the first time, you are asked for a project to host the terminal. Create an extra project for it called: <code>userXY-terminal</code>.</p>
+
+<p>The first time you start a terminal it might take a while. Once initialized it will launch much quicker.</p>
 
 <p>Now let&rsquo;s get familiar with the cli and once the terminal got launched, type:</p>
 
@@ -75,6 +85,8 @@
  oc projects -h
  oc projects
 </code></pre>
+
+<p>You can also use <code>TAB</code> to autocomplete a command you are currently typing. The autocompletion can also query the API to autocomplete on deployed workload, like your project or pod-name.</p>
 
 <h3>Create a new project on the cli</h3>
 
@@ -122,9 +134,11 @@
  oc describe buildconfig handson-tutorial
 </code></pre>
 
+<p>The first command changes your context to the <code>handson-tutorial</code> project, then second command describes the resource <code>BuildConfig</code> called <code>handson-tutorial</code></p>
+
 <p>You can also edit them:</p>
 
-<pre><code> oc edit resrourceXY resourceName
+<pre><code> oc edit resourceXY resourceName
 </code></pre>
 
 <p>For example let&rsquo;s edit the buildconfig</p>
@@ -156,13 +170,15 @@
 
 <p>We have prepared a little demo application that is easy to deploy:</p>
 
-<pre><code> oc new-app -n userXY-app registry.access.redhat.com/ubi8/ruby-30:latest~https://github.com/duritong/ocp-handson-lab/ --context-dir=app/
+<pre><code> oc new-app -n userXY-app registry.redhat.io/ubi8/ruby-30:latest~https://github.com/duritong/ocp-handson-lab/ --context-dir=app/
 </code></pre>
 
 <p>This will create a new application as well as starts a build of the application. You can follow the build using:</p>
 
 <pre><code> oc logs -f buildconfig/ocp-handson-lab
 </code></pre>
+
+<p>Building an application might take a while:</p>
 
 <p>Once finished you can verify your new app, either in the topology view or through the following commands:</p>
 

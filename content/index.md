@@ -35,6 +35,14 @@ To make things a bit more interesting, we have given you read access to the name
 
 There is also a centralized UI for log inspection, which allows you give an aggregated view over the logs from that pod. Can you find it?
 
+### Task
+
+Can you create a new project called `userXY-webui` in the UI? Where XY is the number of your user. Over the whole tutorial we will reference with userXY to this, pay attention when entering / copying commands.
+
+Give it meaningful Display Name and Desc    ription.
+
+Tip: You can get a list of projects, this is also where you can create them.
+
 ## Use the cli
 
 All the operations within the webinterface are API calls to the standard Kubernetes API. OpenShift extends this API with a set of aditional APIs that provide OpenShift specific features. Such as Routes, Builds, etc.
@@ -43,7 +51,9 @@ You can talk to the API using the kubernetes native client `kubectl` or the Open
 
 To give you an easy way to access the cli, OpenShift ships with a built-in web-based Terminal, that allows you to directly execute commands against the API using your account.
 
-You can start such a Terminal with on the `>_` Symbol in the top menu bar on the right hand side. When starting your terminal the first time, you have to choose a base namespace / project with write access to it, that will host the terminal application for you. We recommend to create an extra project for it called: `userXY-terminal`. Where XY is the number of your user. Over the whole tutorial we will reference with userXY to this, pay attention when entering / copying commands.
+You can start such a Terminal with on the `>_` Symbol in the top menu bar on the right hand side. When starting your terminal the first time, you have to choose a base namespace / project with write access to it, that will host the terminal application for you. When you initially launch the terminal the first time, you are asked for a project to host the terminal. Create an extra project for it called: `userXY-terminal`.
+
+The first time you start a terminal it might take a while. Once initialized it will launch much quicker.
 
 Now let's get familiar with the cli and once the terminal got launched, type:
 
@@ -56,6 +66,8 @@ The oc cli features a help output, as well as more detailed help for each comman
      oc help
      oc projects -h
      oc projects
+
+You can also use `TAB` to autocomplete a command you are currently typing. The autocompletion can also query the API to autocomplete on deployed workload, like your project or pod-name.
 
 ### Create a new project on the cli
 
@@ -96,9 +108,11 @@ It is also possible to describe resources to get a more readable format:
      oc project handson-tutorial
      oc describe buildconfig handson-tutorial
 
+The first command changes your context to the `handson-tutorial` project, then second command describes the resource `BuildConfig` called `handson-tutorial`
+
 You can also edit them:
 
-     oc edit resrourceXY resourceName
+     oc edit resourceXY resourceName
 
 For example let's edit the buildconfig
 
@@ -127,11 +141,15 @@ First we need a project to deploy our application into:
 
 We have prepared a little demo application that is easy to deploy:
 
-     oc new-app -n userXY-app registry.access.redhat.com/ubi8/ruby-30:latest~https://github.com/duritong/ocp-handson-lab/ --context-dir=app/
+     oc new-app -n userXY-app registry.redhat.io/ubi8/ruby-30:latest~https://github.com/duritong/ocp-handson-lab/ --context-dir=app/
 
 This will create a new application as well as starts a build of the application. You can follow the build using:
 
      oc logs -f buildconfig/ocp-handson-lab
+
+Building an application might take a while...
+
+![Compiling](compiling.png)
 
 Once finished you can verify your new app, either in the topology view or through the following commands:
 
