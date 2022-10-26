@@ -149,7 +149,7 @@ This will create a new application as well as starts a build of the application.
 
 Building an application might take a while...
 
-![Compiling](compiling.png)
+![Compiling](/compiling.png)
 
 Once finished you can verify your new app, either in the topology view or through the following commands:
 
