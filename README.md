@@ -18,7 +18,7 @@ A simple LAB setup that guides you through OpenShift
     helm repo add kubeinvaders https://lucky-sideburn.github.io/helm-charts/
     oc adm policy add-scc-to-user -n handson-kubeinvaders privileged -z kubeinvaders
     oc adm policy add-scc-to-user -n handson-kubeinvaders anyuid -z kubeinvaders
-    helm upgrade kubeinvaders --set-string target_namespace="user20-app" -n handson-kubeinvaders kubeinvaders/kubeinvaders --set route_host=kubeinvaders.$(oc get -n openshift-ingress-operator ingresscontroller default -o json | jq -r .status.domain) --set ingress.enabled=false --set image.tag=v1.9
+    helm upgrade kubeinvaders -i --set-string target_namespace="user20-app" -n handson-kubeinvaders kubeinvaders/kubeinvaders --set route_host=kubeinvaders.$(oc get -n openshift-ingress-operator ingresscontroller default -o json | jq -r .status.domain) --set ingress.enabled=false --set image.tag=v1.9
 
     oc create route edge --hostname=kubeinvaders.$(oc get -n openshift-ingress-operator ingresscontroller default -o json | jq -r .status.domain) --service=kubeinvaders --insecure-policy=Redirect
 
@@ -26,7 +26,7 @@ A simple LAB setup that guides you through OpenShift
 
     WEBHOOK=`pwgen 40 1`
     MAIN_DOMAIN=xy.com
-    oc new-app -n handson-tutorial contenxt/nginx.json -p NAME=handson-tutorial -p SOURCE_REPOSITORY_URL=https://github.com/duritong/ocp-handson-lab -p CONTEXT_DIR=content -p APPLICATION_DOMAIN=handson.$MAIN_DOMAIN GITHUB_WEBHOOK_SECRET=${WEBHOOK}
+    oc new-app -n handson-tutorial content/nginx.json -p NAME=handson-tutorial -p SOURCE_REPOSITORY_URL=https://github.com/duritong/ocp-handson-lab -p CONTEXT_DIR=content -p APPLICATION_DOMAIN=handson.$MAIN_DOMAIN GITHUB_WEBHOOK_SECRET=${WEBHOOK}
     echo Webhook ${WEBHOOK}
     echo URL: http://handson.$MAIN_DOMAIN
 
