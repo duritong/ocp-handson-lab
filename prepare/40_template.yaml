@@ -4,28 +4,6 @@ metadata:
   name: project-request
   namespace: openshift-config
 objects:
-- apiVersion: networking.k8s.io/v1
-  kind: NetworkPolicy
-  metadata:
-    name: allow-from-same-namespace
-  spec:
-    ingress:
-    - from:
-      - podSelector: {}
-    podSelector: null
-- apiVersion: networking.k8s.io/v1
-  kind: NetworkPolicy
-  metadata:
-    name: allow-from-openshift-ingress
-  spec:
-    ingress:
-    - from:
-      - namespaceSelector:
-          matchLabels:
-            network.openshift.io/policy-group: ingress
-    podSelector: {}
-    policyTypes:
-    - Ingress
 - apiVersion: project.openshift.io/v1
   kind: Project
   metadata:
@@ -65,6 +43,42 @@ objects:
   - apiGroup: rbac.authorization.k8s.io
     kind: User
     name: ${PROJECT_ADMIN_USER}
+- apiVersion: v1
+  kind: ResourceQuota
+  metadata:
+    name: labquota
+  spec:
+    hard:
+      requests.cpu: "8"
+      requests.memory: 18Gi
+      limits.cpu: "16"
+      limits.memory: "36Gi"
+- apiVersion: v1
+  kind: LimitRange
+  metadata:
+    name: lablimits
+  spec:
+    limits:
+    - max:
+        cpu: "8"
+        memory: 8Gi
+      min:
+        cpu: 10m
+        memory: 128Mi
+      type: Pod
+    - default:
+        cpu: 500m
+        memory: 512Mi
+      defaultRequest:
+        cpu: 100m
+        memory: 256Mi
+      max:
+        cpu: "4"
+        memory: 4Gi
+      min:
+        cpu: 10m
+        memory: 128Mi
+      type: Container
 parameters:
 - name: PROJECT_NAME
 - name: PROJECT_DISPLAYNAME
