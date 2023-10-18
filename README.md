@@ -20,7 +20,7 @@ A simple LAB setup that guides you through OpenShift
     oc adm policy add-scc-to-user -n handson-kubeinvaders anyuid -z kubeinvaders
     helm upgrade kubeinvaders -i --set-string target_namespace="user20-app" -n handson-kubeinvaders kubeinvaders/kubeinvaders --set route_host=kubeinvaders.$(oc get -n openshift-ingress-operator ingresscontroller default -o json | jq -r .status.domain) --set ingress.enabled=false --set image.tag=v1.9
 
-    oc create route edge --hostname=kubeinvaders.$(oc get -n openshift-ingress-operator ingresscontroller default -o json | jq -r .status.domain) --service=kubeinvaders --insecure-policy=Redirect
+    oc create route edge -n handson-kubeinvaders --hostname=kubeinvaders.$(oc get -n openshift-ingress-operator ingresscontroller default -o json | jq -r .status.domain) --service=kubeinvaders --insecure-policy=Redirect
 
 ## Deploying the guide
 
